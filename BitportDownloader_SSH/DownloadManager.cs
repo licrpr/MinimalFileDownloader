@@ -196,7 +196,7 @@ namespace BitportDownloader_SSH
                 $"echo \"{downloadPath}\" >>\"{logPath}\"",
                 $"echo \"{info.Url}\" >>\"{logPath}\"",
                 $"date >>\"{logPath}\"",
-                $"mkdir \"{dirPath}\" >>\"{logPath}\"",
+                $"mkdir -p \"{dirPath}\" >>\"{logPath}\"",
                 $"{string.Format(DownloadCommand, info.Url.Escape(), downloadPath.Escape())} 2>>\"{logPath}\"",
                 $"date >>\"{logPath}\"",
             };
@@ -264,6 +264,7 @@ namespace BitportDownloader_SSH
                 StopDownloadingFile(state.Pid.Value);
 
         }
+
         public void StopDownloadingFile(int pid)
         {
             ValidateIsConnected();
