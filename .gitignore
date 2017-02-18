@@ -251,3 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 BitportDownloader_ConsoleTest/appSettings.json
+src/MinimalFileDownloader.App.ConsoleApp/appSettings.json
