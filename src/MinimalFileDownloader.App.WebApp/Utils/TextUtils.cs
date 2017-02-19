@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MinimalFileDownloader.App.ConsoleApp
+namespace MinimalFileDownloader.App.WebApp.Utils
 {
     internal static class TextUtils
     {

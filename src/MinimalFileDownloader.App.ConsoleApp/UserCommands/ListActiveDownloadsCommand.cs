@@ -40,7 +40,7 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
         private void DisplayActiveDownloads()
         {
-            IReadOnlyCollection<DownloadState> activeDownloads = DownloadManager.Downloads;
+            IReadOnlyCollection<IDownloadState> activeDownloads = DownloadManager.Downloads;
 
             ConsoleUtils.WriteLine("Active downloads:");
 

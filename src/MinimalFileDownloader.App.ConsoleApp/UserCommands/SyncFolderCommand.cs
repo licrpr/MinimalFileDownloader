@@ -30,9 +30,9 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
         public override void Run()
         {
-            foreach (var folder in FtpService.ListFoldersAsync("/").GetAwaiter().GetResult())
+            foreach (var folder in FtpService.ListItemsAsync("/", true, false, true).GetAwaiter().GetResult())
             {
-                ConsoleUtils.WriteOption(folder);
+                ConsoleUtils.WriteOption(folder.Path);
             }
 
             ConsoleUtils.DoCommandsWhileNotEscape("Path to download:", path =>
@@ -51,10 +51,10 @@ namespace MinimalFileDownloader.App.ConsoleApp
         {
             path = path.AddInitialSlash();
 
-            var files = FtpService.ListFilesAsync(path).GetAwaiter().GetResult();
+            var files = FtpService.ListItemsAsync(path, true, true, false).GetAwaiter().GetResult();
 
             var downloadInfos = files
-                .Select(file => new DownloadInfo($"ftp://{AppSettings.Ftp.UserName.FtpEscape()}:{AppSettings.Ftp.Password.FtpEscape()}@ftp.bitport.io/{file.RemoveInitialSlah().FtpEscape()}", file.RemoveInitialSlah()))
+                .Select(file => new DownloadInfo($"ftp://{AppSettings.Ftp.UserName.FtpEscape()}:{AppSettings.Ftp.Password.FtpEscape()}@{AppSettings.Ftp.Url}/{file.Path.RemoveInitialSlash().FtpEscape()}", file.Path.RemoveInitialSlash()))
                 .ToArray();
 
             DownloadManager.StartDownloadingFiles(downloadInfos);

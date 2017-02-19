@@ -92,7 +92,7 @@ namespace MinimalFileDownloader.Common.SSH
             };
         }
 
-        public IReadOnlyCollection<DownloadState> Downloads
+        public IReadOnlyCollection<IDownloadState> Downloads
         {
             get
             {
@@ -148,10 +148,15 @@ namespace MinimalFileDownloader.Common.SSH
                  .LastOrDefault();
         }
 
-        public void StopDownloadingFile(DownloadState state)
+        public void StopDownloadingFile(IDownloadState state)
         {
-            if (state.Pid.HasValue)
-                StopDownloadingFile(state.Pid.Value);
+            var knownState = state as DownloadState;
+            if (knownState == null)
+            {
+                throw new InvalidOperationException($"Only supports {typeof(DownloadState).FullName} as type of state!");
+            }
+            if (knownState.Pid.HasValue)
+                StopDownloadingFile(knownState.Pid.Value);
         }
 
         public void StopDownloadingFile(int pid)

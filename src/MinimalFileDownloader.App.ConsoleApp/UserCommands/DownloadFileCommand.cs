@@ -30,9 +30,9 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
         public override void Run()
         {
-            foreach (var folder in FtpService.ListFilesAsync("/").GetAwaiter().GetResult())
+            foreach (var folder in FtpService.ListItemsAsync("/", true, true, false).GetAwaiter().GetResult())
             {
-                ConsoleUtils.WriteOption(folder);
+                ConsoleUtils.WriteOption(folder.Path);
             }
 
             ConsoleUtils.DoCommandsWhileNotEscape("Path to download:", path =>
@@ -49,7 +49,7 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
         private void DownloadFile(string path)
         {
-            path = path.RemoveInitialSlah();
+            path = path.RemoveInitialSlash();
 
             var name = path.Split('/').LastOrDefault();
 

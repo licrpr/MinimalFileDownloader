@@ -30,6 +30,50 @@ namespace MinimalFileDownloader.Common.FTP
             return await EnumerateFoldersAsync(path);
         }
 
+        public async Task<IReadOnlyCollection<IFtpItem>> ListItemsAsync(string path, bool recursive, bool getFiles, bool getFolders)
+        {
+            await EnsureConnected();
+            return await EnumerateItemsAsync(path, recursive, getFiles, getFolders);
+        }
+
+        private async Task<IReadOnlyCollection<IFtpItem>> EnumerateItemsAsync(string path, bool recursive, bool getFiles, bool getFolders)
+        {
+            List<IFtpItem> items = new List<IFtpItem>();
+
+            await _session.ChangeWorkingDirectoryAsync(path);
+            var entries = await _session.ListAllAsync();
+
+            if (getFolders)
+            {
+                items.Add(new FtpItem()
+                {
+                    Path = path,
+                    IsDirectory = true
+                });
+            }
+
+            foreach (FtpNodeInformation entry in entries)
+            {
+                string childPath = path.AppendPath(entry.Name);
+                switch (entry.NodeType)
+                {
+                    case FtpNodeType.File:
+                        items.Add(new FtpItem()
+                        {
+                            Path = childPath,
+                            IsFile = true
+                        });
+                        break;
+
+                    case FtpNodeType.Directory:
+                        var childItems = await EnumerateItemsAsync(childPath, recursive, getFiles, getFolders);
+                        items.AddRange(childItems);
+                        break;
+                }
+            }
+            return items;
+        }
+
         private async Task<IReadOnlyCollection<string>> EnumerateFilesAsync(string path)
         {
             List<string> files = new List<string>();

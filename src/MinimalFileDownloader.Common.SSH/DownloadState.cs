@@ -2,7 +2,7 @@
 
 namespace MinimalFileDownloader.Common.SSH
 {
-    public class DownloadState : IEquatable<DownloadState>
+    public class DownloadState : IEquatable<DownloadState>, IDownloadState
     {
         public enum Statuses
         {
