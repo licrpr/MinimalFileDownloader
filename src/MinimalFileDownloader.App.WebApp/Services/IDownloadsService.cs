@@ -1,10 +1,11 @@
 ﻿using MinimalFileDownloader.App.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinimalFileDownloader.App.WebApp.Services
 {
-    public interface IDownloadsService
+    public interface IDownloadsService : IDisposable
     {
         Task<IReadOnlyCollection<DownloadResponse>> GetDownloadsAsync();
 

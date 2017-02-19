@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v0",
+    "title": "MinimalFileDownloader"
+  },
+  "basePath": "/",
+  "paths": {
+    "/api/v0/browser": {
+      "get": {
+        "tags": [
+          "Browser"
+        ],
+        "operationId": "ApiV0BrowserGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "name": "Directory",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Recursive",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "unknown",
+              "files",
+              "folders",
+              "all"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BrowseResponseItem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v0/downloads": {
+      "get": {
+        "tags": [
+          "Downloads"
+        ],
+        "operationId": "ApiV0DownloadsGet",
+        "consumes": [],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DownloadResponse"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Downloads"
+        ],
+        "operationId": "ApiV0DownloadsPost",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/StartDownloadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Downloads"
+        ],
+        "operationId": "ApiV0DownloadsDelete",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/StopDownloadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BrowseResponseItem": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "unknown",
+            "file",
+            "folder"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "DownloadResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "unknown",
+            "active",
+            "finished"
+          ],
+          "type": "string"
+        },
+        "completion": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "StartDownloadRequest": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StartDownloadRequestItem"
+          }
+        }
+      }
+    },
+    "StartDownloadRequestItem": {
+      "type": "object",
+      "properties": {
+        "sourcePath": {
+          "type": "string"
+        },
+        "destinationPath": {
+          "type": "string"
+        }
+      }
+    },
+    "StopDownloadRequest": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {}
+}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MinimalFileDownloader.Common.FTP
 {
-    public class CoreFtpService : IDisposable, IFtpService
+    public class CoreFtpService : IFtpService
     {
         public FtpSettings AppSettings { get; }
 

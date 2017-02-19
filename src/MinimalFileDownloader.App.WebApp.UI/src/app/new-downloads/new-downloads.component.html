@@ -1,0 +1,28 @@
+
+  <div class="card">
+    <div class="card-header">
+      <h1>
+        {{title}}
+      </h1>
+    </div>
+    <div class="list-group">
+      <div *ngFor="let item of items" class="list-group-item justify-content-between list-group-flush">
+        <div class="col">
+          <span>
+          {{ item.path }}
+        </span>
+        </div>
+        <div class="col col-auto">
+          <button *ngIf="isWorkingOn(item)" class="btn btn-warning" disabled>
+            Working ...
+          </button>
+          <button *ngIf="canSyncFolder(item)" class="btn btn-primary" (click)="syncFolder(item)">
+            Sync Folder
+          </button>
+          <button *ngIf="canDownloadFile(item)" class="btn btn-success" (click)="downloadFile(item)">
+            Download file
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

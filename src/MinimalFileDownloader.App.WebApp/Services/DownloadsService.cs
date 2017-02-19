@@ -59,5 +59,10 @@ namespace MinimalFileDownloader.App.WebApp.Services
             }
             return Task.CompletedTask;
         }
+
+        public void Dispose()
+        {
+            _downloadManager.Dispose();
+        }
     }
 }

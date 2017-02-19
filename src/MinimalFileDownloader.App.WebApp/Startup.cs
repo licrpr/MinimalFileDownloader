@@ -8,6 +8,7 @@ using MinimalFileDownloader.App.WebApp.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MinimalFileDownloader.App.WebApp
 {
@@ -35,6 +36,12 @@ namespace MinimalFileDownloader.App.WebApp
 
             services.AddScoped<IBrowserService, BrowserService>();
             services.AddScoped<IDownloadsService, DownloadsService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v0", new Info { Title = "MinimalFileDownloader", Version = "v0" });
+            });
+
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(options =>
@@ -56,6 +63,11 @@ namespace MinimalFileDownloader.App.WebApp
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseSwagger();
+            app.UseSwaggerUi(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v0/swagger.json", "MinimalFileDownloader V0");
+            });
             app.UseMvc();
         }
     }
