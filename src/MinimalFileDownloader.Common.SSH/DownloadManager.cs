@@ -1,4 +1,5 @@
 ﻿using Renci.SshNet;
+using Renci.SshNet.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace MinimalFileDownloader.Common.SSH
     {
         public SshSettings Setup { get; }
 
-        private SshClient sshClient { get; }
+        private readonly SshClient sshClient;
 
-        private object _communicationLock = new object();
+        private readonly object _communicationLock = new object();
 
         public SshDownloadManager(SshSettings setup)
         {
@@ -26,17 +27,14 @@ namespace MinimalFileDownloader.Common.SSH
             {
                 sshClient.Connect();
             }
-            catch (Exception)
+            catch (SshConnectionException)
             {
             }
         }
 
         public bool IsConnected
         {
-            get
-            {
-                return sshClient.IsConnected;
-            }
+            get { return sshClient.IsConnected; }
         }
 
         public void Reconect()
@@ -134,7 +132,7 @@ namespace MinimalFileDownloader.Common.SSH
 
         private int? GetCompletion(string downloadPath, IReadOnlyDictionary<string, string> fileLogs)
         {
-            var logPath = fileLogs.Where(o => o.Value == downloadPath).FirstOrDefault().Key;
+            var logPath = fileLogs.FirstOrDefault(o => o.Value == downloadPath).Key;
 
             string cmd = $"cat \"{logPath}\" | tail -n 5";
             string result = RunCommand(cmd);
