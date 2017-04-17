@@ -46,7 +46,20 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
             foreach (var download in activeDownloads)
             {
-                ConsoleUtils.WriteLine($"{download.Path} {download.Status} {download.Completion}");
+                ConsoleColor color;
+                switch (download.Status)
+                {
+                    case DownloadState.Statuses.Active:
+                        color = ConsoleColor.Yellow;
+                        break;
+                    case DownloadState.Statuses.Finished:
+                        color = ConsoleColor.Green;
+                        break;
+                    default:
+                        color = ConsoleColor.Red;
+                        break;
+                }
+                ConsoleUtils.WriteLine($"{download.Path} {download.Status} {download.Completion}", color);
             }
             if (canRefresh)
             {

@@ -5,12 +5,21 @@ namespace MinimalFileDownloader.App.ConsoleApp
 {
     internal static class ConsoleUtils
     {
-        public static void WriteLine(string line)
+        public static void WriteLine(string line,ConsoleColor? color=null)
         {
+            var oldColor = Console.ForegroundColor;
+            if (color.HasValue)
+                Console.ForegroundColor = color.Value;
+
             Console.WriteLine(line);
 #if DEBUG
             Debug.WriteLine(line);
 #endif
+            if (color.HasValue)
+            {
+                Console.ForegroundColor = color.Value;
+                Console.ForegroundColor = oldColor;
+            }
         }
 
         public static void WriteOption(string line, int lengthToUnderline = 0)
