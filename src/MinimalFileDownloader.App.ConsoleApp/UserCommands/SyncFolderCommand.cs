@@ -12,21 +12,9 @@ namespace MinimalFileDownloader.App.ConsoleApp
         {
         }
 
-        public override string Name
-        {
-            get
-            {
-                return "Sync File or Folder";
-            }
-        }
+        public override string Name => "Sync File or Folder";
 
-        public override string Shortcut
-        {
-            get
-            {
-                return "sync";
-            }
-        }
+        public override string Shortcut => "sync";
 
         public override void Run()
         {
@@ -53,11 +41,25 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
             var files = FtpService.ListItemsAsync(path, true, true, false).GetAwaiter().GetResult();
 
-            var downloadInfos = files
-                .Select(file => new DownloadInfo($"ftp://{AppSettings.Ftp.UserName.FtpEscape()}:{AppSettings.Ftp.Password.FtpEscape()}@{AppSettings.Ftp.Url}/{file.Path.RemoveInitialSlash().FtpEscape()}", file.Path.RemoveInitialSlash()))
-                .ToArray();
+            if (!files.Any())
+            {
+                ConsoleUtils.WriteLine($"No files selected!");
+                return;
+            }
+            else
+            {
+                ConsoleUtils.WriteLine($"Downloading files:");
+                foreach (var file in files)
+                {
+                    ConsoleUtils.WriteLine($"    {file}");
+                }
 
-            DownloadManager.StartDownloadingFiles(downloadInfos);
+                var downloadInfos = files
+                    .Select(file => new DownloadInfo($"ftp://{AppSettings.Ftp.UserName.FtpEscape()}:{AppSettings.Ftp.Password.FtpEscape()}@{AppSettings.Ftp.Url}/{file.Path.RemoveInitialSlash().FtpEscape()}", file.Path.RemoveInitialSlash()))
+                    .ToArray();
+
+                DownloadManager.StartDownloadingFiles(downloadInfos);
+            }
         }
 
         public override void RunSilent(IReadOnlyDictionary<string, string> parameters)
@@ -69,6 +71,7 @@ namespace MinimalFileDownloader.App.ConsoleApp
 
             string path = parameters["path"];
 
+            ConsoleUtils.WriteLine($"Downloading all files from path: {path}");
             DownloadFilesFromFolder(path);
         }
     }

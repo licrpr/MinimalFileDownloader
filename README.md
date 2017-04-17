@@ -6,4 +6,4 @@ Download files using any Linux machine on network from FTP server, e.g. use Rasp
 - Add all missing functionality to web UI.
 - Add module, that deletes a file from BitPort after it was donwloaded. Configurable via appSettings.json .
 - Add Watcher mode, so that it can run in the background and auto sync all.
-- Improve ConsoleApp, add new Nuget package for console input. Log progress for silent commands. In list cmd, there does not need to be "press enter to refresh"
+- Improve ConsoleApp, add new Nuget package for console input.

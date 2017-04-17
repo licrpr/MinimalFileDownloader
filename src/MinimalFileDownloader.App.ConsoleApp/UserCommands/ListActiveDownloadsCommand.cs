@@ -34,11 +34,11 @@ namespace MinimalFileDownloader.App.ConsoleApp
             {
                 Console.Clear();
 
-                DisplayActiveDownloads();
+                DisplayActiveDownloads(true);
             }, cmd => { });
         }
 
-        private void DisplayActiveDownloads()
+        private void DisplayActiveDownloads(bool canRefresh)
         {
             IReadOnlyCollection<IDownloadState> activeDownloads = DownloadManager.Downloads;
 
@@ -48,12 +48,15 @@ namespace MinimalFileDownloader.App.ConsoleApp
             {
                 ConsoleUtils.WriteLine($"{download.Path} {download.Status} {download.Completion}");
             }
-            ConsoleUtils.WriteLine("<Press ENTER to refresh>");
+            if (canRefresh)
+            {
+                ConsoleUtils.WriteLine("<Press ENTER to refresh>");
+            }
         }
 
         public override void RunSilent(IReadOnlyDictionary<string, string> parameters)
         {
-            DisplayActiveDownloads();
+            DisplayActiveDownloads(false);
         }
     }
 }

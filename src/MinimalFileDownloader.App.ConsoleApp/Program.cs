@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MinimalFileDownloader.App.ConsoleApp
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -26,7 +26,7 @@ namespace MinimalFileDownloader.App.ConsoleApp
                     new SyncFolderCommand(settings,downloadManager,ftpService)
                 };
 
-                if (args.Any())
+                if (args.Length != 0)
                 {
                     IUserCommand cmd = GetNewCommand(userCommands, args[0]);
                     if (cmd == null)
@@ -35,6 +35,7 @@ namespace MinimalFileDownloader.App.ConsoleApp
                     }
                     else
                     {
+                        ConsoleUtils.WriteLine($"Selected command: {cmd.Name}");
                         var argsDict = ParseArgs(args.Skip(1));
 
                         cmd.RunSilent(argsDict);
@@ -100,8 +101,6 @@ namespace MinimalFileDownloader.App.ConsoleApp
                 return result;
 
             result = userCommands.FirstOrDefault(o => string.Equals(o.Name, commandName, StringComparison.OrdinalIgnoreCase));
-            if (result != null)
-                return result;
 
             return result;
         }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MinimalFileDownloader.App.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "\"s\" \"path=/\""
+    }
+  }
+}

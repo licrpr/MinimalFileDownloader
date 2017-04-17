@@ -1,7 +1,6 @@
 ﻿using CoreFtp;
 using CoreFtp.Enum;
 using CoreFtp.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

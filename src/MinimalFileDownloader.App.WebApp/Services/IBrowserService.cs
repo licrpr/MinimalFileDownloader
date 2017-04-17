@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MinimalFileDownloader.App.WebApp.Services
 {
-    public interface IBrowserService:IDisposable
+    public interface IBrowserService : IDisposable
     {
         Task<IEnumerable<BrowseResponseItem>> GetItemsAsync(BrowseRequest request);
 

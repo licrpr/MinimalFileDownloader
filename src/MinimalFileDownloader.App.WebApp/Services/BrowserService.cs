@@ -42,7 +42,7 @@ namespace MinimalFileDownloader.App.WebApp.Services
             else
                 return BrowseResponseItemType.Unknown;
         }
-        
+
         public void Dispose()
         {
             _ftpService.Dispose();
